@@ -1,0 +1,95 @@
+Menu de Opções:
+1. Cadastrar item
+2. Listar itens
+3. Consultar item
+4. Vender item
+5. Sair
+Escolha uma opção: 1
+
+Digite o nome do item: Café
+Digite o autor do item: Pedro
+Digite a quantidade em estoque: 20
+Item 'Café' cadastrado com sucesso!
+
+Menu de Opções:
+1. Cadastrar item
+2. Listar itens
+3. Consultar item
+4. Vender item
+5. Sair
+Escolha uma opção: 1
+
+Digite o nome do item: Arroz
+Digite o autor do item: Pedro
+Digite a quantidade em estoque: 5
+Item 'Arroz' cadastrado com sucesso!
+
+Menu de Opções:
+1. Cadastrar item
+2. Listar itens
+3. Consultar item
+4. Vender item
+5. Sair
+Escolha uma opção: 1
+
+Digite o nome do item: Farinha c/ Fermento
+Digite o autor do item: Pedro
+Digite a quantidade em estoque: 12
+Item 'Farinha c/ Fermento' cadastrado com sucesso!
+
+Menu de Opções:
+1. Cadastrar item
+2. Listar itens
+3. Consultar item
+4. Vender item
+5. Sair
+Escolha uma opção: 2
+
+Nome: Café, Autor: Pedro, Quantidade: 20
+Nome: Arroz, Autor: Pedro, Quantidade: 5
+Nome: Farinha c/ Fermento, Autor: Pedro, Quantidade: 12
+
+Menu de Opções:
+1. Cadastrar item
+2. Listar itens
+3. Consultar item
+4. Vender item
+5. Sair
+Escolha uma opção: 3
+
+Digite o nome do item a consultar: Arroz
+Nome: Arroz, Autor: Pedro, Quantidade: 5
+
+Menu de Opções:
+1. Cadastrar item
+2. Listar itens
+3. Consultar item
+4. Vender item
+5. Sair
+Escolha uma opção: 4
+
+Digite o nome do item a vender: Café
+Digite a quantidade a vender: 4 
+Venda registrada! Quantidade restante de 'Café': 16
+
+Menu de Opções:
+1. Cadastrar item
+2. Listar itens
+3. Consultar item
+4. Vender item
+5. Sair
+Escolha uma opção: 2
+
+Nome: Café, Autor: Pedro, Quantidade: 16
+Nome: Arroz, Autor: Pedro, Quantidade: 5
+Nome: Farinha c/ Fermento, Autor: Pedro, Quantidade: 12
+
+Menu de Opções:
+1. Cadastrar item
+2. Listar itens
+3. Consultar item
+4. Vender item
+5. Sair
+Escolha uma opção: 5
+
+Saindo...
