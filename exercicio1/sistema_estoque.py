@@ -49,7 +49,7 @@ def main():
         '2': list_items,
         '3': view_item,
         '4': sell_item,
-        '5': lambda: "exit"
+        '5': lambda stock: "exit"
     }
 
     while True:
@@ -66,7 +66,7 @@ def main():
         if selected in options:
             result = options[selected](stock)
             if result == "exit":
-                print("Saindo...")
+                print("Saindo...\n")
                 break
         else:
             print("Opção inválida! Tente novamente.")
