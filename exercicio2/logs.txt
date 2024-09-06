@@ -1,0 +1,91 @@
+Pedro@MacBook exercicio2 % docker build -t sistema_estoque .
+[+] Building 5.9s (9/9) FINISHED                                                                                                        docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                    0.0s
+ => => transferring dockerfile: 357B                                                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/python:3.10-slim                                                                                     2.2s
+ => [auth] library/python:pull token for registry-1.docker.io                                                                                           0.0s
+ => [internal] load .dockerignore                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                         0.0s
+ => [1/3] FROM docker.io/library/python:3.10-slim@sha256:2407c61b1a18067393fecd8a22cf6fceede893b6aaca817bf9fbfe65e33614a3                               3.4s
+ => => resolve docker.io/library/python:3.10-slim@sha256:2407c61b1a18067393fecd8a22cf6fceede893b6aaca817bf9fbfe65e33614a3                               0.0s
+ => => sha256:dd80dafee5dca284d7b5b7ebae7df21fde29fd8f35d5cd90aa25e0fe87dac527 12.36MB / 12.36MB                                                        1.0s
+ => => sha256:2407c61b1a18067393fecd8a22cf6fceede893b6aaca817bf9fbfe65e33614a3 9.13kB / 9.13kB                                                          0.0s
+ => => sha256:91d97ab87081f0864f6d960ef3b4e7e30da096b69c92005b893e57688607ea72 1.95kB / 1.95kB                                                          0.0s
+ => => sha256:e7b2f728574b806d3344b7e8953c5f729614816a42efe87cd9d696d51db1a1a1 6.91kB / 6.91kB                                                          0.0s
+ => => sha256:92c3b3500be621c72c7ac6432a9d8f731f145f4a1535361ffd3a304e55f7ccda 29.16MB / 29.16MB                                                        1.0s
+ => => sha256:3bc0bb0f48368309a59f8f76a26a1a2aefa34ff474a1d5fc171b034e954d299b 3.33MB / 3.33MB                                                          0.8s
+ => => sha256:d521368b1c67f29f283411d9bbd69a1609fece28fbb835cb4257c4c6eafa4723 232B / 232B                                                              1.0s
+ => => extracting sha256:92c3b3500be621c72c7ac6432a9d8f731f145f4a1535361ffd3a304e55f7ccda                                                               1.3s
+ => => sha256:162068753d7565e172ce6e2643fd01deb5f2002832c7f4fe6108b6e5151dfeab 3.16MB / 3.16MB                                                          1.4s
+ => => extracting sha256:3bc0bb0f48368309a59f8f76a26a1a2aefa34ff474a1d5fc171b034e954d299b                                                               0.1s
+ => => extracting sha256:dd80dafee5dca284d7b5b7ebae7df21fde29fd8f35d5cd90aa25e0fe87dac527                                                               0.5s
+ => => extracting sha256:d521368b1c67f29f283411d9bbd69a1609fece28fbb835cb4257c4c6eafa4723                                                               0.0s
+ => => extracting sha256:162068753d7565e172ce6e2643fd01deb5f2002832c7f4fe6108b6e5151dfeab                                                               0.2s
+ => [internal] load build context                                                                                                                       0.0s
+ => => transferring context: 2.47kB                                                                                                                     0.0s
+ => [2/3] WORKDIR /app                                                                                                                                  0.2s
+ => [3/3] COPY sistema_estoque.py .                                                                                                                     0.0s
+ => exporting to image                                                                                                                                  0.0s
+ => => exporting layers                                                                                                                                 0.0s
+ => => writing image sha256:ab9dc7882691827da79df95cb988702ccbf169c7b5d7d3952cc7964cd34840cd                                                            0.0s
+ => => naming to docker.io/library/sistema_estoque                                                                                                      0.0s
+
+What's next:
+    View a summary of image vulnerabilities and recommendations → docker scout quickview 
+Pedro@MacBook exercicio2 % docker run -it sistema_estoque
+
+Menu de Opções:
+1. Cadastrar item
+2. Listar itens
+3. Consultar item
+4. Vender item
+5. Sair
+Escolha uma opção: 1
+
+Digite o nome do item: Chocolate
+Digite o autor do item: Pedro
+Digite a quantidade em estoque: 12
+Item 'Chocolate' cadastrado com sucesso!
+
+Menu de Opções:
+1. Cadastrar item
+2. Listar itens
+3. Consultar item
+4. Vender item
+5. Sair
+Escolha uma opção: 2
+
+Nome: Chocolate, Autor: Pedro, Quantidade: 12
+
+Menu de Opções:
+1. Cadastrar item
+2. Listar itens
+3. Consultar item
+4. Vender item
+5. Sair
+Escolha uma opção: 4
+
+Digite o nome do item a vender: Chocolate
+Digite a quantidade a vender: 4
+Venda registrada! Quantidade restante de 'Chocolate': 8
+
+Menu de Opções:
+1. Cadastrar item
+2. Listar itens
+3. Consultar item
+4. Vender item
+5. Sair
+Escolha uma opção: 3
+
+Digite o nome do item a consultar: Chocolate
+Nome: Chocolate, Autor: Pedro, Quantidade: 8
+
+Menu de Opções:
+1. Cadastrar item
+2. Listar itens
+3. Consultar item
+4. Vender item
+5. Sair
+Escolha uma opção: 5
+
+Saindo...
