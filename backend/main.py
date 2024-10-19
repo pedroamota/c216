@@ -2,53 +2,32 @@ from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from typing import List, Optional
 import time
+from db.database import DatabaseConnection
+import os
 
-
-# Inicializar o repositório de produtos (armazenado na memória)
-produtos = [
-    {"id": 1, "nome": "Clocolate", "repositor": "Pedro", "quantidade": 10, "preco": 10.0},
-    {"id": 2, "nome": "Arroz", "repositor": "Leticia", "quantidade": 5, "preco": 40.0},
-]
-
-# Inicializar a aplicação FastAPI
 app = FastAPI()
 
-
-# Modelo para adicionar novos produtos
-class Produto(BaseModel):
-    id: Optional[int] = None
+class ProdutoBase(BaseModel):
     nome: str
-    repositor: str
+    categoria: str
     quantidade: int
+    #dataValidade: int
     preco: float
 
-# Modelo para venda de produtos
+class Produto(ProdutoBase):
+    id: Optional[int] = None
+
 class VendaProduto(BaseModel):
     quantidade: int
 
-
-# Modelo para atualizar atributos de um produto (exceto o ID)
 class AtualizarProduto(BaseModel):
     nome: Optional[str] = None
-    repositor: Optional[str] = None
+    categoria: Optional[str] = None
     quantidade: Optional[int] = None
+    #dataValidade: Optional[datetime] = None
     preco: Optional[float] = None
 
-# Função para gerar o próximo ID dinamicamente
-def gerar_proximo_id():
-    if produtos:
-        return max(produto['id'] for produto in produtos) + 1
-    else:
-        return 1
-
-# Função auxiliar para buscar produto por ID
-def buscar_produto_por_id(produto_id: int):
-    for produto in produtos:
-        if produto["id"] == produto_id:
-            return produto
-    return None
-
-# Middleware para logging
+# Middleware
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     start_time = time.time()
@@ -57,85 +36,112 @@ async def log_requests(request: Request, call_next):
     print(f"Path: {request.url.path}, Method: {request.method}, Process Time: {process_time:.4f}s")
     return response
 
-# 1. Adicionar um novo produto
-@app.post("/api/v1/stock/", status_code=201)
-def adicionar_produto(produto: Produto):
-    # Verificar se o produto já existe
-    for l in produtos:
-        if l["repositor"].lower() == produto.repositor.lower() and l["nome"].lower() == produto.nome.lower():
-            raise HTTPException(status_code=400, detail="Produto já existe.")
-    
-    # Gerar ID dinamicamente
-    novo_produto = produto.dict()
-    novo_produto['id'] = gerar_proximo_id()
+async def produto_existe(nome: str, categoria: str, conn):
+    query = "SELECT 1 FROM estoque WHERE LOWER(nome) = LOWER($1) AND LOWER(categoria) = LOWER($2)"
+    return await conn.fetchval(query, nome, categoria)
 
-    # Adicionar o novo produto ao repositório
-    produtos.append(novo_produto)
-    return {"message": "Produto adicionado com sucesso!", "produto": novo_produto}
-
-# 2. Listar todos os produtos
-@app.get("/api/v1/stock/", response_model=List[Produto])
-def listar_produtos():
-    return produtos
-
-# 3. Buscar produto por ID
-@app.get("/api/v1/stock/{produto_id}")
-def listar_produto_por_id(produto_id: int):
-    produto = buscar_produto_por_id(produto_id)
+# Buscar um produto por ID
+async def buscar_produto_por_id(produto_id: int, conn):
+    query = "SELECT * FROM estoque WHERE id = $1"
+    produto = await conn.fetchrow(query, produto_id)
     if produto is None:
         raise HTTPException(status_code=404, detail="Produto não encontrado.")
     return produto
 
-# 4. Vender um produto (reduzir quantidade no estoque)
-@app.put("/api/v1/stock/{produto_id}/vender/")
-def vender_produto(produto_id: int, venda: VendaProduto):
-    produto = buscar_produto_por_id(produto_id)
-    
-    if produto is None:
-        raise HTTPException(status_code=404, detail="produto não encontrado.")
-    
-    if produto["quantidade"] < venda.quantidade:
-        raise HTTPException(status_code=400, detail="Quantidade insuficiente no estoque.")
-    
-    produto["quantidade"] -= venda.quantidade
-    return {"message": "Venda realizada com sucesso!", "produto": produto}
+# 1. Adicionar um novo produto
+@app.post("/api/v1/estoque/", status_code=201)
+async def adicionar_produto(produto: ProdutoBase):
+    async with DatabaseConnection() as conn:
+        if await produto_existe(produto.nome, produto.categoria, conn):
+            raise HTTPException(status_code=400, detail="Produto já existe.")
+        query = "INSERT INTO estoque (nome, categoria, quantidade, preco) VALUES ($1, $2, $3, $4)"
+        await conn.execute(query, produto.nome, produto.categoria, produto.quantidade, produto.preco)
+        return {"message": "Produto adicionado com sucesso!"}
 
+# 2. Listar todos os produtos no estoque
+@app.get("/api/v1/estoque/", response_model=List[Produto])
+async def listar_estoque():
+    async with DatabaseConnection() as conn:
+        query = "SELECT * FROM estoque"
+        rows = await conn.fetch(query)
+        return [dict(row) for row in rows]
 
-# 5. Atualizar atributos de um produto pelo ID (exceto o ID)
-@app.patch("/api/v1/stock/{produto_id}")
-def atualizar_produto(produto_id: int, produto_atualizacao: AtualizarProduto):
-    produto = buscar_produto_por_id(produto_id)
-    if produto is None:
-        raise HTTPException(status_code=404, detail="Produto não encontrado.")
-    
-    # Atualizar apenas os campos fornecidos no body
-    if produto_atualizacao.nome is not None:
-        produto["nome"] = produto_atualizacao.nome
-    if produto_atualizacao.repositor is not None:
-        produto["repositor"] = produto_atualizacao.repositor
-    if produto_atualizacao.quantidade is not None:
-        produto["quantidade"] = produto_atualizacao.quantidade
-    if produto_atualizacao.preco is not None:
-        produto["preco"] = produto_atualizacao.preco
+# 3. Buscar produto por ID
+@app.get("/api/v1/estoque/{produto_id}")
+async def listar_produto_por_id(produto_id: int):
+    async with DatabaseConnection() as conn:
+        produto = await buscar_produto_por_id(produto_id, conn)
+        return dict(produto)
 
-    return {"message": "Produto atualizado com sucesso!", "produto": produto}
+# 4. Vender um produto
+@app.put("/api/v1/estoque/{produto_id}/vender/")
+async def vender_produto(produto_id: int, venda: VendaProduto):
+    async with DatabaseConnection() as conn:
+        produto = await buscar_produto_por_id(produto_id, conn)
 
+        if produto['quantidade'] < venda.quantidade:
+            raise HTTPException(status_code=400, detail="Quantidade insuficiente no estoque.")
 
-# 6. Remover um produto pelo ID
-@app.delete("/api/v1/stock/{produto_id}")
-def remover_produto(produto_id: int):
-    for i, produto in enumerate(produtos):
-        if produto["id"] == produto_id:
-            del produtos[i]
-            return {"message": "Produto removido com sucesso!"}
-        
+        nova_quantidade = produto['quantidade'] - venda.quantidade
+        update_query = "UPDATE estoque SET quantidade = $1 WHERE id = $2"
+        await conn.execute(update_query, nova_quantidade, produto_id)
 
-# 7. Resetar repositorio de produtos
-@app.delete("/api/v1/stock/")
-def resetar_produtos():
-    global produtos
-    produtos = [
-    {"id": 1, "nome": "Clocolate", "repositor": "Pedro", "quantidade": 10, "preco": 10.0},
-    {"id": 2, "nome": "Arroz", "repositor": "Leticia", "quantidade": 5, "preco": 40.0},
-    ]
-    return {"message": "Repositorio limpo com sucesso!", "produtos": produtos}
+        valor_venda = produto['preco'] * venda.quantidade
+        insert_venda_query = "INSERT INTO vendas (produto_id, quantidade_vendida, valor_venda) VALUES ($1, $2, $3)"
+        await conn.execute(insert_venda_query, produto_id, venda.quantidade, valor_venda)
+
+        produto_atualizado = dict(produto)
+        produto_atualizado['quantidade'] = nova_quantidade
+        return {"message": "Venda realizada com sucesso!", "produto": produto_atualizado}
+
+# 5. Atualizar atributos
+@app.patch("/api/v1/estoque/{produto_id}")
+async def atualizar_produto(produto_id: int, produto_atualizacao: AtualizarProduto):
+    async with DatabaseConnection() as conn:
+        produto = await buscar_produto_por_id(produto_id, conn)
+
+        update_query = """
+            UPDATE estoque
+            SET nome = COALESCE($1, nome),
+                categoria = COALESCE($2, categoria),
+                quantidade = COALESCE($3, quantidade),
+                preco = COALESCE($4, preco)
+            WHERE id = $5
+        """
+        await conn.execute(
+            update_query,
+            produto_atualizacao.nome,
+            produto_atualizacao.categoria,
+            produto_atualizacao.quantidade,
+            produto_atualizacao.preco,
+            produto_id
+        )
+        return {"message": "Produto atualizado com sucesso!"}
+
+# 6. Remover um produto
+@app.delete("/api/v1/estoque/{produto_id}")
+async def remover_produto(produto_id: int):
+    async with DatabaseConnection() as conn:
+        produto = await buscar_produto_por_id(produto_id, conn)
+
+        delete_query = "DELETE FROM estoque WHERE id = $1"
+        await conn.execute(delete_query, produto_id)
+        return {"message": "Produto removido com sucesso!"}
+
+# 7. Resetar banco de dados de estoque
+@app.delete("/api/v1/estoque/")
+async def resetar_estoque():
+    init_sql = os.getenv("INIT_SQL", "db/init.sql")
+    async with DatabaseConnection() as conn:
+        with open(init_sql, 'r') as file:
+            sql_commands = file.read()
+        await conn.execute(sql_commands)
+        return {"message": "Banco de dados limpo com sucesso!"}
+
+# 8. Listar vendas
+@app.get("/api/v1/vendas/")
+async def listar_vendas():
+    async with DatabaseConnection() as conn:
+        query = "SELECT * FROM vendas"
+        rows = await conn.fetch(query)
+        return [dict(row) for row in rows]

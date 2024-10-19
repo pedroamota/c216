@@ -1,0 +1,367 @@
+{
+	"id": "ba0cf1e5-60b7-4a89-9761-cbcda64207c8",
+	"name": "C216-L1-Pedro_GES135-4b",
+	"timestamp": "2024-10-19T01:48:09.126Z",
+	"collection_id": "18279940-d5aea95c-77ea-4934-9e03-7c76ede7e343",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 20,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2024-10-19T01:48:08.238Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "2f4e7ad6-0316-4a6e-b46e-dadcb8a62734",
+			"name": "DELETE - Remover Todos os Produtos (RESETAR BANCO DE DADOS)",
+			"url": "http://127.0.0.1:8000/api/v1/estoque/",
+			"time": 88,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should confirm deletion": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should confirm deletion": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				88
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should confirm deletion": true
+				}
+			]
+		},
+		{
+			"id": "e23e433d-d2cb-4974-b48f-aca51b891b45",
+			"name": "GET - Listar todos os produtos",
+			"url": "http://127.0.0.1:8000/api/v1/estoque/",
+			"time": 39,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should be a list": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should be a list": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				39
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should be a list": true
+				}
+			]
+		},
+		{
+			"id": "8b863b37-cba4-42b4-be79-dc36a657390d",
+			"name": "GET - Buscar Produto por ID",
+			"url": "http://127.0.0.1:8000/api/v1/estoque/1",
+			"time": 45,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should contain products details": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should contain products details": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				45
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should contain products details": true
+				}
+			]
+		},
+		{
+			"id": "4b16d963-5e88-447c-89cd-4932d5364606",
+			"name": "POST - Adicionar um Produto",
+			"url": "http://127.0.0.1:8000/api/v1/estoque/",
+			"time": 46,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Response should contain confirmation message": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should contain confirmation message": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				46
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Response should contain confirmation message": true
+				}
+			]
+		},
+		{
+			"id": "8b0f4efe-11ca-4c1f-a5b9-3c80f0c0dd16",
+			"name": "PUT - Vender um Produto",
+			"url": "http://127.0.0.1:8000/api/v1/estoque/1/vender/",
+			"time": 45,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should confirm sale": true,
+				"Quantidade do produto foi atualizada": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should confirm sale": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Quantidade do produto foi atualizada": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				45
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should confirm sale": true,
+					"Quantidade do produto foi atualizada": true
+				}
+			]
+		},
+		{
+			"id": "b54f3433-a22b-495a-81d2-432e45187c6c",
+			"name": "GET - Listar todas as vendas",
+			"url": "http://127.0.0.1:8000/api/v1/vendas/",
+			"time": 34,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should confirm sales details": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should confirm sales details": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				34
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should confirm sales details": true
+				}
+			]
+		},
+		{
+			"id": "5792095e-8233-43a9-9f11-0758dbb1b8ef",
+			"name": "PATCH - Atualizar Atributos de um Produto",
+			"url": "http://127.0.0.1:8000/api/v1/estoque/3",
+			"time": 36,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should confirm update": true,
+				"Os atributos do produto foram atualizados": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should confirm update": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Os atributos do produto foram atualizados": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				36
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should confirm update": true,
+					"Os atributos do produto foram atualizados": true
+				}
+			]
+		},
+		{
+			"id": "6a092eac-b4e5-4485-ab3c-e771d7a7f3c1",
+			"name": "DELETE - Remover um Produto",
+			"url": "http://127.0.0.1:8000/api/v1/estoque/1",
+			"time": 35,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should confirm deletion": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should confirm deletion": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				35
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should confirm deletion": true
+				}
+			]
+		},
+		{
+			"id": "183e301e-22f5-4edc-a027-6ef4cbc0d945",
+			"name": "DELETE - Remover Todos os Produto (RESETAR REPOSITORIO)",
+			"url": "http://127.0.0.1:8000/api/v1/estoque/",
+			"time": 44,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response should confirm deletion": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response should confirm deletion": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				44
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response should confirm deletion": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 412,
+	"collection": {
+		"requests": [
+			{
+				"id": "2f4e7ad6-0316-4a6e-b46e-dadcb8a62734",
+				"method": "DELETE"
+			},
+			{
+				"id": "e23e433d-d2cb-4974-b48f-aca51b891b45",
+				"method": "GET"
+			},
+			{
+				"id": "8b863b37-cba4-42b4-be79-dc36a657390d",
+				"method": "GET"
+			},
+			{
+				"id": "4b16d963-5e88-447c-89cd-4932d5364606",
+				"method": "POST"
+			},
+			{
+				"id": "8b0f4efe-11ca-4c1f-a5b9-3c80f0c0dd16",
+				"method": "PUT"
+			},
+			{
+				"id": "b54f3433-a22b-495a-81d2-432e45187c6c",
+				"method": "GET"
+			},
+			{
+				"id": "5792095e-8233-43a9-9f11-0758dbb1b8ef",
+				"method": "PATCH"
+			},
+			{
+				"id": "6a092eac-b4e5-4485-ab3c-e771d7a7f3c1",
+				"method": "DELETE"
+			},
+			{
+				"id": "183e301e-22f5-4edc-a027-6ef4cbc0d945",
+				"method": "DELETE"
+			}
+		]
+	}
+}
