@@ -1,0 +1,66 @@
+/* Fontes e Cores Gerais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FAFAFA; /* Fundo leve e neutro */
+    color: #212121; /* Cor do texto primário (Cinza Escuro) */
+    margin: 0;
+    padding: 0;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #6200EA; /* Roxo Material */
+    color: #FFFFFF; /* Texto Branco */
+    padding: 1em 0;
+    text-align: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra suave */
+}
+
+nav a {
+    margin: 0 15px;
+    color: #FFFFFF; /* Branco para contrastar com o roxo */
+    text-decoration: none;
+    font-weight: 500; /* Fonte semi-negrito para navegação */
+}
+
+/* Seção principal */
+section {
+    margin: 20px;
+    padding: 20px;
+    background-color: #FFFFFF; /* Fundo branco para seções */
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave para destacar */
+}
+
+/* Títulos */
+h1 {
+    color: #ffffff; /* Azul Material */
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+h2 {
+    color: #1E88E5; /* Azul Material */
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+/* Links e Botões Interativos */
+button, a.button {
+    background-color: #03DAC6; /* Ciano Material */
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+button:hover, a.button:hover {
+    background-color: #018786; /* Ciano Material mais escuro */
+}
+
+/* Navegação ativa */
+nav a.active {
+    color: #FFAB00; /* Amarelo Material para realçar o item ativo */
+}
